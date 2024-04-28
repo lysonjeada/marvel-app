@@ -15,6 +15,11 @@
 		241ED0032BDD925B003A0F75 /* marvel_appTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241ED0022BDD925B003A0F75 /* marvel_appTests.swift */; };
 		241ED00D2BDD925B003A0F75 /* marvel_appUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241ED00C2BDD925B003A0F75 /* marvel_appUITests.swift */; };
 		241ED00F2BDD925B003A0F75 /* marvel_appUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241ED00E2BDD925B003A0F75 /* marvel_appUITestsLaunchTests.swift */; };
+		241ED01D2BDE9201003A0F75 /* UseCaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241ED01C2BDE9201003A0F75 /* UseCaseProtocol.swift */; };
+		241ED0212BDE928B003A0F75 /* CharacterListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241ED0202BDE928B003A0F75 /* CharacterListUseCase.swift */; };
+		241ED0232BDE92C4003A0F75 /* CharacterResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241ED0222BDE92C4003A0F75 /* CharacterResponse.swift */; };
+		241ED0252BDE92FF003A0F75 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241ED0242BDE92FF003A0F75 /* NetworkError.swift */; };
+		241ED0282BDE931D003A0F75 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241ED0272BDE931D003A0F75 /* String.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +52,11 @@
 		241ED0082BDD925B003A0F75 /* marvel-appUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "marvel-appUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		241ED00C2BDD925B003A0F75 /* marvel_appUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = marvel_appUITests.swift; sourceTree = "<group>"; };
 		241ED00E2BDD925B003A0F75 /* marvel_appUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = marvel_appUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		241ED01C2BDE9201003A0F75 /* UseCaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseCaseProtocol.swift; sourceTree = "<group>"; };
+		241ED0202BDE928B003A0F75 /* CharacterListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterListUseCase.swift; sourceTree = "<group>"; };
+		241ED0222BDE92C4003A0F75 /* CharacterResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterResponse.swift; sourceTree = "<group>"; };
+		241ED0242BDE92FF003A0F75 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		241ED0272BDE931D003A0F75 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +107,8 @@
 		241ECFEA2BDD9258003A0F75 /* marvel-app */ = {
 			isa = PBXGroup;
 			children = (
+				241ED01E2BDE923F003A0F75 /* Character */,
+				241ED01B2BDE91F3003A0F75 /* Network */,
 				241ECFEB2BDD9258003A0F75 /* AppDelegate.swift */,
 				241ECFED2BDD9258003A0F75 /* SceneDelegate.swift */,
 				241ECFEF2BDD9258003A0F75 /* ViewController.swift */,
@@ -122,6 +134,41 @@
 				241ED00E2BDD925B003A0F75 /* marvel_appUITestsLaunchTests.swift */,
 			);
 			path = "marvel-appUITests";
+			sourceTree = "<group>";
+		};
+		241ED01B2BDE91F3003A0F75 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				241ED0262BDE9312003A0F75 /* Utils */,
+				241ED01C2BDE9201003A0F75 /* UseCaseProtocol.swift */,
+				241ED0242BDE92FF003A0F75 /* NetworkError.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		241ED01E2BDE923F003A0F75 /* Character */ = {
+			isa = PBXGroup;
+			children = (
+				241ED01F2BDE926D003A0F75 /* Network */,
+			);
+			path = Character;
+			sourceTree = "<group>";
+		};
+		241ED01F2BDE926D003A0F75 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				241ED0202BDE928B003A0F75 /* CharacterListUseCase.swift */,
+				241ED0222BDE92C4003A0F75 /* CharacterResponse.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		241ED0262BDE9312003A0F75 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				241ED0272BDE931D003A0F75 /* String.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -254,9 +301,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				241ED0212BDE928B003A0F75 /* CharacterListUseCase.swift in Sources */,
+				241ED0252BDE92FF003A0F75 /* NetworkError.swift in Sources */,
 				241ECFF02BDD9258003A0F75 /* ViewController.swift in Sources */,
+				241ED0232BDE92C4003A0F75 /* CharacterResponse.swift in Sources */,
 				241ECFEC2BDD9258003A0F75 /* AppDelegate.swift in Sources */,
 				241ECFEE2BDD9258003A0F75 /* SceneDelegate.swift in Sources */,
+				241ED0282BDE931D003A0F75 /* String.swift in Sources */,
+				241ED01D2BDE9201003A0F75 /* UseCaseProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
