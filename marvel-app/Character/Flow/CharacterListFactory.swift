@@ -1,8 +1,14 @@
-//
-//  CharacterListFactory.swift
-//  marvel-app
-//
-//  Created by Amaryllis Rosemaria Baldrez Calefi on 28/04/24.
-//
-
 import Foundation
+
+enum CharacterListFactory {
+    static func build() -> CharacterListViewController {
+        let useCase = CharacterListUseCase()
+        let view = CharacterListViewController()
+        let presenter = CharacterListPresenter(view: view)
+        let interactor = CharacterListInteractor(useCase: useCase, presenter: presenter)
+        
+        view.interactor = interactor
+        
+        return view
+    }
+}

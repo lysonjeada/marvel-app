@@ -20,6 +20,11 @@
 		241ED0232BDE92C4003A0F75 /* CharacterResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241ED0222BDE92C4003A0F75 /* CharacterResponse.swift */; };
 		241ED0252BDE92FF003A0F75 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241ED0242BDE92FF003A0F75 /* NetworkError.swift */; };
 		241ED0282BDE931D003A0F75 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241ED0272BDE931D003A0F75 /* String.swift */; };
+		241ED02B2BDE9425003A0F75 /* CharacterListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241ED02A2BDE9425003A0F75 /* CharacterListInteractor.swift */; };
+		241ED02D2BDE961A003A0F75 /* CharacterListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241ED02C2BDE961A003A0F75 /* CharacterListPresenter.swift */; };
+		241ED02F2BDE96BC003A0F75 /* CharacterListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241ED02E2BDE96BC003A0F75 /* CharacterListViewController.swift */; };
+		241ED0322BDE96DD003A0F75 /* SDWebImageLinkPlugin in Frameworks */ = {isa = PBXBuildFile; productRef = 241ED0312BDE96DD003A0F75 /* SDWebImageLinkPlugin */; };
+		241ED0342BDEA52E003A0F75 /* CharacterListFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241ED0332BDEA52E003A0F75 /* CharacterListFactory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +62,10 @@
 		241ED0222BDE92C4003A0F75 /* CharacterResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterResponse.swift; sourceTree = "<group>"; };
 		241ED0242BDE92FF003A0F75 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		241ED0272BDE931D003A0F75 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		241ED02A2BDE9425003A0F75 /* CharacterListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterListInteractor.swift; sourceTree = "<group>"; };
+		241ED02C2BDE961A003A0F75 /* CharacterListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterListPresenter.swift; sourceTree = "<group>"; };
+		241ED02E2BDE96BC003A0F75 /* CharacterListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterListViewController.swift; sourceTree = "<group>"; };
+		241ED0332BDEA52E003A0F75 /* CharacterListFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterListFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				241ED0322BDE96DD003A0F75 /* SDWebImageLinkPlugin in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,6 +159,7 @@
 		241ED01E2BDE923F003A0F75 /* Character */ = {
 			isa = PBXGroup;
 			children = (
+				241ED0292BDE93F6003A0F75 /* Flow */,
 				241ED01F2BDE926D003A0F75 /* Network */,
 			);
 			path = Character;
@@ -171,6 +182,17 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		241ED0292BDE93F6003A0F75 /* Flow */ = {
+			isa = PBXGroup;
+			children = (
+				241ED02A2BDE9425003A0F75 /* CharacterListInteractor.swift */,
+				241ED02C2BDE961A003A0F75 /* CharacterListPresenter.swift */,
+				241ED02E2BDE96BC003A0F75 /* CharacterListViewController.swift */,
+				241ED0332BDEA52E003A0F75 /* CharacterListFactory.swift */,
+			);
+			path = Flow;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -187,6 +209,9 @@
 			dependencies = (
 			);
 			name = "marvel-app";
+			packageProductDependencies = (
+				241ED0312BDE96DD003A0F75 /* SDWebImageLinkPlugin */,
+			);
 			productName = "marvel-app";
 			productReference = 241ECFE82BDD9258003A0F75 /* marvel-app.app */;
 			productType = "com.apple.product-type.application";
@@ -259,6 +284,9 @@
 				Base,
 			);
 			mainGroup = 241ECFDF2BDD9258003A0F75;
+			packageReferences = (
+				241ED0302BDE96DD003A0F75 /* XCRemoteSwiftPackageReference "SDWebImageLinkPlugin" */,
+			);
 			productRefGroup = 241ECFE92BDD9258003A0F75 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -301,11 +329,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				241ED02F2BDE96BC003A0F75 /* CharacterListViewController.swift in Sources */,
 				241ED0212BDE928B003A0F75 /* CharacterListUseCase.swift in Sources */,
+				241ED0342BDEA52E003A0F75 /* CharacterListFactory.swift in Sources */,
 				241ED0252BDE92FF003A0F75 /* NetworkError.swift in Sources */,
 				241ECFF02BDD9258003A0F75 /* ViewController.swift in Sources */,
 				241ED0232BDE92C4003A0F75 /* CharacterResponse.swift in Sources */,
+				241ED02B2BDE9425003A0F75 /* CharacterListInteractor.swift in Sources */,
 				241ECFEC2BDD9258003A0F75 /* AppDelegate.swift in Sources */,
+				241ED02D2BDE961A003A0F75 /* CharacterListPresenter.swift in Sources */,
 				241ECFEE2BDD9258003A0F75 /* SceneDelegate.swift in Sources */,
 				241ED0282BDE931D003A0F75 /* String.swift in Sources */,
 				241ED01D2BDE9201003A0F75 /* UseCaseProtocol.swift in Sources */,
@@ -639,6 +671,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		241ED0302BDE96DD003A0F75 /* XCRemoteSwiftPackageReference "SDWebImageLinkPlugin" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageLinkPlugin";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		241ED0312BDE96DD003A0F75 /* SDWebImageLinkPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 241ED0302BDE96DD003A0F75 /* XCRemoteSwiftPackageReference "SDWebImageLinkPlugin" */;
+			productName = SDWebImageLinkPlugin;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 241ECFE02BDD9258003A0F75 /* Project object */;
 }

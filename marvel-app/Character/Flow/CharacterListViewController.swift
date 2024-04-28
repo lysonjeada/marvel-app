@@ -7,7 +7,28 @@ protocol CharacterListViewProtocol {
 
 class CharacterListViewController: UIViewController, CharacterListViewProtocol {
     
-    private var collectionView: UICollectionView!
+    private let searchController = UISearchController(searchResultsController: nil)
+    
+    private lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 4
+        layout.minimumInteritemSpacing = 10
+        layout.itemSize = CGSize(width: 150, height: 250)
+        let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
+        collectionView.backgroundColor = .white
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.register(CharacterCollectionViewCell.self, forCellWithReuseIdentifier: "CharacterCell")
+        collectionView.dataSource = self
+        return collectionView
+    }()
+    
+    private lazy var searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.delegate = self
+        searchBar.placeholder = "buscar"
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        return searchBar
+    }()
     
     var interactor: CharacterListInteractorProtocol?
     
@@ -23,32 +44,53 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setupSearchController()
         title = "Marvel Characters"
         
-        // Configurar collection view
-        let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 4
-        layout.minimumInteritemSpacing = 10
-        layout.itemSize = CGSize(width: 150, height: 250)
-        
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
-        collectionView.backgroundColor = .white
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        collectionView.register(CharacterCollectionViewCell.self, forCellWithReuseIdentifier: "CharacterCell")
-        collectionView.dataSource = self
-        
         view.addSubview(collectionView)
+        
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
         
         interactor?.fetchCharacters()
     }
     
     func displayCharacters(characteres: [CharacterInfo?]) {
         guard let characteres = characteres as? [CharacterInfo] else { return }
-        self.characters = characteres.compactMap { $0 }.chunked(into: 2)
+        self.characters = characteres.compactMap { $0 }.map { [$0] }
         collectionView.reloadData()
     }
     
+    private func setupSearchController() {
+        self.searchController.searchResultsUpdater = self
+        self.searchController.obscuresBackgroundDuringPresentation = false
+        self.searchController.hidesNavigationBarDuringPresentation = false
+        self.searchController.searchBar.placeholder = "Search Cryptos"
+        
+        self.navigationItem.searchController = searchController
+        self.definesPresentationContext = false
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        
+        searchController.delegate = self
+        searchController.searchBar.delegate = self
+        searchController.searchBar.showsBookmarkButton = true
+//        searchController.searchBar.setImage(UIImage(systemName: "line.horizontal.3.decrease"), for: .bookmark, state: .normal)
+    }
+}
+
+extension CharacterListViewController: UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate  {
     
+    func updateSearchResults(for searchController: UISearchController) {
+//        self.viewModel.updateSearchController(searchBarText: searchController.searchBar.text)
+    }
+    
+    func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
+        print("Search bar button called!")
+    }
 }
 
 extension CharacterListViewController: UICollectionViewDataSource {
@@ -73,6 +115,8 @@ extension CharacterListViewController: UICollectionViewDataSource {
 
 class CharacterCollectionViewCell: UICollectionViewCell {
     
+    var favoriteButtonHandler: (() -> Void)?
+    
     private lazy var characterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -80,24 +124,39 @@ class CharacterCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
+    private lazy var infoStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        stackView.distribution = .fill
+        stackView.alignment = .leading
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.numberOfLines = 0
         return label
     }()
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
+        label.numberOfLines = 4
         return label
+    }()
+    
+    private lazy var favoriteButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Favoritar", for: .normal)
+        button.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
+        return button
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        addSubview(characterImageView)
-        addSubview(nameLabel)
-        addSubview(descriptionLabel)
         
         setupConstraints()
     }
@@ -106,25 +165,34 @@ class CharacterCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc private func favoriteButtonTapped() {
+        favoriteButtonHandler?()
+    }
+    
     private func setupConstraints() {
         characterImageView.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        infoStackView.addArrangedSubview(nameLabel)
+        infoStackView.addArrangedSubview(descriptionLabel)
+        infoStackView.addArrangedSubview(favoriteButton)
+        
+        infoStackView.setCustomSpacing(12, after: descriptionLabel)
+        
+        addSubview(characterImageView)
+        addSubview(infoStackView)
+        
         NSLayoutConstraint.activate([
-            characterImageView.topAnchor.constraint(equalTo: topAnchor),
+            characterImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             characterImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             characterImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
             characterImageView.heightAnchor.constraint(equalToConstant: 150),
             
-            nameLabel.topAnchor.constraint(equalTo: characterImageView.bottomAnchor, constant: 8),
-            nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            infoStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            infoStackView.leadingAnchor.constraint(equalTo: characterImageView.trailingAnchor, constant: 8),
             
-            descriptionLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-            descriptionLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            descriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            descriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
+            
         ])
     }
     
