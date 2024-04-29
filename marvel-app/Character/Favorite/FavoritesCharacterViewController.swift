@@ -2,11 +2,11 @@ import UIKit
 import CoreData
 import SDWebImage
 
-protocol CharacterListViewProtocol {
-    func saveFavorite(with name: String, description: String, imagePath: String, imageExtension: String)
+protocol FavoritesCharacterViewProtocol {
+    
 }
 
-class CharacterListViewController: UIViewController, CharacterListViewProtocol {
+class FavoritesCharacterViewController: UIViewController, FavoritesCharacterViewProtocol {
     
     private let searchController = UISearchController(searchResultsController: nil)
     
@@ -33,9 +33,9 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
         return searchBar
     }()
     
-    var viewModel: CharacterListViewModel?
+    var viewModel: FavoritesCharacterViewModel?
     
-    private var characters: [[CharacterInfo]] = []
+    private var charactersInfo: [CharacterInfo] = []
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -64,11 +64,12 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
     }
     
     func displayCharacters() {
-        viewModel?.fetchCharacters(completion: { characteres in
-            guard let characteres = characteres else { return }
-            self.characters = characteres.compactMap { $0 }.map { [$0] }
-            self.collectionView.reloadData()
-        })
+        DispatchQueue.main.async { [weak self] in
+            let context = (UIApplication.shared.delegate as!AppDelegate).persistentContainer.viewContext
+            let characters = self?.viewModel?.returnFavorites(with: context)
+            guard let characters = characters else { return }
+            self?.collectionView.reloadData()
+        }
     }
     
     private func setupSearchController() {
@@ -86,21 +87,9 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
         searchController.searchBar.showsBookmarkButton = true
         //        searchController.searchBar.setImage(UIImage(systemName: "line.horizontal.3.decrease"), for: .bookmark, state: .normal)
     }
-    
-    func saveFavorite(with name: String, description: String, imagePath: String, imageExtension: String) {
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        let entity = NSEntityDescription.entity(forEntityName: "Characters", in: context)
-        let newUser = NSManagedObject(entity: entity!, insertInto: context)
-        newUser.setValue(name, forKey: "name")
-        newUser.setValue(imagePath, forKey: "imagePath")
-        newUser.setValue(imageExtension, forKey: "imageExtension")
-        newUser.setValue(description, forKey: "text")
-        
-        viewModel?.saveFavorite(with: context)
-    }
 }
 
-extension CharacterListViewController: UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate  {
+extension FavoritesCharacterViewController: UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate  {
     
     func updateSearchResults(for searchController: UISearchController) {
         //        self.viewModel.updateSearchController(searchBarText: searchController.searchBar.text)
@@ -111,22 +100,22 @@ extension CharacterListViewController: UISearchResultsUpdating, UISearchControll
     }
 }
 
-extension CharacterListViewController: UICollectionViewDelegate {
+extension FavoritesCharacterViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let characterDetailVC = CharacterDetailViewController(character: characters[indexPath.section][indexPath.row])
+        let characterDetailVC = CharacterDetailViewController(character: charactersInfo[indexPath.row])
         let navigationController = UINavigationController(rootViewController: characterDetailVC)
         self.present(navigationController, animated: true, completion: nil)
     }
 }
 
-extension CharacterListViewController: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return characters.count
+extension FavoritesCharacterViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return charactersInfo.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return characters[section].count
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return charactersInfo.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -134,11 +123,20 @@ extension CharacterListViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        let character = characters[indexPath.section][indexPath.row]
-        cell.setCell(delegate: self)
-        cell.isFavorited = false
-        cell.configure(with: character)
+        let context = (UIApplication.shared.delegate as!AppDelegate).persistentContainer.viewContext
+        var characters = viewModel?.returnFavorites(with: context)
+        characters?.forEach({ character in
+            if let name = character.name,
+               let thumbnailPath = character.imagePath,
+               let thumbnailExtension = character.imageExtension {
+                let characterInfo = CharacterInfo(name: name, description: character.description, thumbnailPath: thumbnailPath, thumbnailExtension: thumbnailExtension)
+                cell.configure(with: characterInfo)
+                charactersInfo.append(characterInfo)
+            }
+        })
+        
+        cell.isFavorited = true
+        
         return cell
     }
 }
-

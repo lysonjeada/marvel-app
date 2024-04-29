@@ -3,11 +3,10 @@ import Foundation
 enum CharacterListFactory {
     static func build() -> CharacterListViewController {
         let useCase = CharacterListUseCase()
+        let viewModel = CharacterListViewModel(useCase: useCase)
         let view = CharacterListViewController()
-        let presenter = CharacterListPresenter(view: view)
-        let interactor = CharacterListInteractor(useCase: useCase, presenter: presenter)
         
-        view.interactor = interactor
+        view.viewModel = viewModel
         
         return view
     }
