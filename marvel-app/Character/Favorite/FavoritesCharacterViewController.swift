@@ -138,14 +138,6 @@ extension FavoritesCharacterViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let context = (UIApplication.shared.delegate as!AppDelegate).persistentContainer.viewContext
-        let characters = viewModel?.returnFavorites(with: context)
-        
-        characters?.forEach({ character in
-            let characterInfo = CharacterInfo(name: character.name, description: character.description, thumbnailPath: character.thumbnailPath, thumbnailExtension: character.thumbnailExtension)
-            charactersInfo.append(characterInfo)
-        })
-        
         if charactersInfo.count == 0 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as? EmptyCollectionViewCell else {
                 return UICollectionViewCell()

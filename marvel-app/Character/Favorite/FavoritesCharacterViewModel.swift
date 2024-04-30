@@ -32,7 +32,7 @@ class FavoritesCharacterViewModel {
                 context.delete(object as! NSManagedObject)
             }
             
-            try context.save() // Salva as alterações após a exclusão
+            try context.save()
         } catch {
             print("Error deleting favorite: \(error)")
         }
