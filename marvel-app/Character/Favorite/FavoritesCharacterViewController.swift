@@ -147,7 +147,7 @@ extension FavoritesCharacterViewController: UICollectionViewDataSource {
         })
         
         if charactersInfo.count == 0 {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as? CharacterCollectionViewCell else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as? EmptyCollectionViewCell else {
                 return UICollectionViewCell()
             }
             
