@@ -47,7 +47,10 @@ class FavoritesCharacterViewController: UIViewController, FavoritesCharacterView
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.collectionView.reloadData()
+        displayCharacters()
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
     
     override func viewDidLoad() {
@@ -67,7 +70,7 @@ class FavoritesCharacterViewController: UIViewController, FavoritesCharacterView
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
-        displayCharacters()
+        
     }
     
     func displayCharacters() {
@@ -129,11 +132,19 @@ extension FavoritesCharacterViewController: UICollectionViewDelegate {
 
 extension FavoritesCharacterViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return charactersInfo.count
+        if charactersInfo.count == 0 {
+            return 1
+        } else {
+            return charactersInfo.count
+        }
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return charactersInfo.count
+        if charactersInfo.count == 0 {
+            return 1
+        } else {
+            return charactersInfo.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

@@ -77,42 +77,10 @@
             filePath = "marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "154"
-            endingLineNumber = "154"
+            startingLineNumber = "165"
+            endingLineNumber = "165"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "FF8260C6-2B0C-49E6-857B-AB7BEEB3CCDA - e7400222d7f9db17"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "marvel_app.FavoritesCharacterViewController.collectionView(_: __C.UICollectionView, cellForItemAt: Foundation.IndexPath) -&gt; __C.UICollectionViewCell"
-                  moduleName = "marvel-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maclys/Documents/marvel-app/marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "162"
-                  endingLineNumber = "162"
-                  offsetFromSymbolStart = "204">
-               </Location>
-               <Location
-                  uuid = "FF8260C6-2B0C-49E6-857B-AB7BEEB3CCDA - e7400222d7f9db17"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "marvel_app.FavoritesCharacterViewController.collectionView(_: __C.UICollectionView, cellForItemAt: Foundation.IndexPath) -&gt; __C.UICollectionViewCell"
-                  moduleName = "marvel-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maclys/Documents/marvel-app/marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "162"
-                  endingLineNumber = "162"
-                  offsetFromSymbolStart = "2204">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -125,57 +93,10 @@
             filePath = "marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "D47AECB2-8492-4B95-93DF-AE6D69298990 - e7400222d7f9dad1"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "marvel_app.FavoritesCharacterViewController.collectionView(_: __C.UICollectionView, cellForItemAt: Foundation.IndexPath) -&gt; __C.UICollectionViewCell"
-                  moduleName = "marvel-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maclys/Documents/marvel-app/marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "168"
-                  endingLineNumber = "168"
-                  offsetFromSymbolStart = "164">
-               </Location>
-               <Location
-                  uuid = "D47AECB2-8492-4B95-93DF-AE6D69298990 - e7400222d7f9daf2"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "marvel_app.FavoritesCharacterViewController.collectionView(_: __C.UICollectionView, cellForItemAt: Foundation.IndexPath) -&gt; __C.UICollectionViewCell"
-                  moduleName = "marvel-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maclys/Documents/marvel-app/marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "167"
-                  endingLineNumber = "167"
-                  offsetFromSymbolStart = "576">
-               </Location>
-               <Location
-                  uuid = "D47AECB2-8492-4B95-93DF-AE6D69298990 - e7400222d7f9dad1"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "marvel_app.FavoritesCharacterViewController.collectionView(_: __C.UICollectionView, cellForItemAt: Foundation.IndexPath) -&gt; __C.UICollectionViewCell"
-                  moduleName = "marvel-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maclys/Documents/marvel-app/marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "168"
-                  endingLineNumber = "168"
-                  offsetFromSymbolStart = "2536">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -188,42 +109,10 @@
             filePath = "marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "171"
-            endingLineNumber = "171"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
             landmarkName = "FavoritesCharacterViewController"
             landmarkType = "21">
-            <Locations>
-               <Location
-                  uuid = "D29F50C9-88CE-450E-9BEC-FEB81BBF93C9 - e7400222d7f9d966"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "marvel_app.FavoritesCharacterViewController.collectionView(_: __C.UICollectionView, cellForItemAt: Foundation.IndexPath) -&gt; __C.UICollectionViewCell"
-                  moduleName = "marvel-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maclys/Documents/marvel-app/marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "179"
-                  endingLineNumber = "179"
-                  offsetFromSymbolStart = "652">
-               </Location>
-               <Location
-                  uuid = "D29F50C9-88CE-450E-9BEC-FEB81BBF93C9 - e7400222d7f9d966"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "marvel_app.FavoritesCharacterViewController.collectionView(_: __C.UICollectionView, cellForItemAt: Foundation.IndexPath) -&gt; __C.UICollectionViewCell"
-                  moduleName = "marvel-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maclys/Documents/marvel-app/marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "179"
-                  endingLineNumber = "179"
-                  offsetFromSymbolStart = "1340">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -236,57 +125,10 @@
             filePath = "marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
             landmarkName = "displayCharacters()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "E5C9B2FC-F1C8-416F-B7B6-D3304D18265F - 8bbc7ee5654e952f"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "marvel_app.FavoritesCharacterViewController.viewDidLoad() -&gt; ()"
-                  moduleName = "marvel-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maclys/Documents/marvel-app/marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "76"
-                  endingLineNumber = "76"
-                  offsetFromSymbolStart = "296">
-               </Location>
-               <Location
-                  uuid = "E5C9B2FC-F1C8-416F-B7B6-D3304D18265F - 8bbc7ee5654e950e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "marvel_app.FavoritesCharacterViewController.viewDidLoad() -&gt; ()"
-                  moduleName = "marvel-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maclys/Documents/marvel-app/marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "77"
-                  endingLineNumber = "77"
-                  offsetFromSymbolStart = "264">
-               </Location>
-               <Location
-                  uuid = "E5C9B2FC-F1C8-416F-B7B6-D3304D18265F - 27a6b9e7d93c3db9"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in marvel_app.FavoritesCharacterViewController.displayCharacters() -&gt; ()"
-                  moduleName = "marvel-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maclys/Documents/marvel-app/marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "75"
-                  endingLineNumber = "75"
-                  offsetFromSymbolStart = "120">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -299,42 +141,10 @@
             filePath = "marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
             landmarkName = "searchBarBookmarkButtonClicked(_:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "9108B767-6A04-428D-ABA8-9AB8A8E3EEEE - 39035aa585975d1c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "marvel_app.FavoritesCharacterViewController.populateFavorites() -&gt; ()"
-                  moduleName = "marvel-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maclys/Documents/marvel-app/marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "116"
-                  endingLineNumber = "116"
-                  offsetFromSymbolStart = "536">
-               </Location>
-               <Location
-                  uuid = "9108B767-6A04-428D-ABA8-9AB8A8E3EEEE - e02fde4cef050ded"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "marvel_app.FavoritesCharacterViewController.searchBarBookmarkButtonClicked(__C.UISearchBar) -&gt; ()"
-                  moduleName = "marvel-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maclys/Documents/marvel-app/marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "116"
-                  endingLineNumber = "116"
-                  offsetFromSymbolStart = "48">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -347,57 +157,26 @@
             filePath = "marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
+            startingLineNumber = "121"
+            endingLineNumber = "121"
             landmarkName = "searchBarBookmarkButtonClicked(_:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "AF28AF8E-4802-41FF-A4CC-699C4E89CC16 - 39035aa585975d5a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "marvel_app.FavoritesCharacterViewController.populateFavorites() -&gt; ()"
-                  moduleName = "marvel-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maclys/Documents/marvel-app/marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "118"
-                  endingLineNumber = "118"
-                  offsetFromSymbolStart = "708">
-               </Location>
-               <Location
-                  uuid = "AF28AF8E-4802-41FF-A4CC-699C4E89CC16 - 5c94f6f56e6ff95d"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in marvel_app.FavoritesCharacterViewController.populateFavorites() -&gt; ()"
-                  moduleName = "marvel-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maclys/Documents/marvel-app/marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "118"
-                  endingLineNumber = "118"
-                  offsetFromSymbolStart = "64">
-               </Location>
-               <Location
-                  uuid = "AF28AF8E-4802-41FF-A4CC-699C4E89CC16 - e02fde4cef050dab"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "marvel_app.FavoritesCharacterViewController.searchBarBookmarkButtonClicked(__C.UISearchBar) -&gt; ()"
-                  moduleName = "marvel-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maclys/Documents/marvel-app/marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "118"
-                  endingLineNumber = "118"
-                  offsetFromSymbolStart = "204">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B9AA1A7F-E8BC-4626-9968-88908DD6C385"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "marvel-app/Character/Favorite/FavoritesCharacterViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
+            landmarkName = "numberOfSections(in:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
