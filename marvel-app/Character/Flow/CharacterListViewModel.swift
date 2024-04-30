@@ -55,9 +55,20 @@ class CharacterListViewModel: CharacterListViewModelProtocol {
     }
 }
 
-struct CharacterInfo: Hashable {
+struct CharacterInfo: Equatable, Hashable {
     let name: String
     let description: String
     let thumbnailPath: String
     let thumbnailExtension: String
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+        hasher.combine(description)
+        hasher.combine(thumbnailPath)
+        hasher.combine(thumbnailExtension)
+    }
+    
+    static func ==(lhs: CharacterInfo, rhs: CharacterInfo) -> Bool {
+        return lhs.name == rhs.name && lhs.description == rhs.description && lhs.thumbnailPath == rhs.thumbnailPath && lhs.thumbnailExtension == rhs.thumbnailExtension
+    }
 }

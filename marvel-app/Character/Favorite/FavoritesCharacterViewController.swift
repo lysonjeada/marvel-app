@@ -3,7 +3,7 @@ import CoreData
 import SDWebImage
 
 protocol FavoritesCharacterViewProtocol {
-    
+    func deleteFavorite(with name: String)
 }
 
 class FavoritesCharacterViewController: UIViewController, FavoritesCharacterViewProtocol {
@@ -15,7 +15,7 @@ class FavoritesCharacterViewController: UIViewController, FavoritesCharacterView
         layout.minimumLineSpacing = 4
         layout.minimumInteritemSpacing = 10
         let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
-        layout.itemSize = CGSize(width: collectionView.bounds.width, height: 250)
+        layout.itemSize = CGSize(width: collectionView.bounds.width, height: 150)
         collectionView.backgroundColor = .white
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.register(CharacterCollectionViewCell.self, forCellWithReuseIdentifier: "CharacterCell")
@@ -46,24 +46,28 @@ class FavoritesCharacterViewController: UIViewController, FavoritesCharacterView
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.collectionView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupSearchController()
-        title = "Marvel Characters"
+        title = "Favorites Characters"
         
         setupGradientBackground()
-        
-        displayCharacters()
         
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
             
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        
+        displayCharacters()
     }
     
     func displayCharacters() {
@@ -92,6 +96,14 @@ class FavoritesCharacterViewController: UIViewController, FavoritesCharacterView
         searchController.searchBar.delegate = self
         searchController.searchBar.showsBookmarkButton = true
         //        searchController.searchBar.setImage(UIImage(systemName: "line.horizontal.3.decrease"), for: .bookmark, state: .normal)
+    }
+    
+    func deleteFavorite(with name: String) {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        self.viewModel?.deleteFavorite(withName: name, from: context)
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
 }
 
@@ -126,8 +138,6 @@ extension FavoritesCharacterViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        
-        
         let context = (UIApplication.shared.delegate as!AppDelegate).persistentContainer.viewContext
         let characters = viewModel?.returnFavorites(with: context)
         
@@ -136,7 +146,7 @@ extension FavoritesCharacterViewController: UICollectionViewDataSource {
             charactersInfo.append(characterInfo)
         })
         
-        if charactersInfo.isEmpty {
+        if charactersInfo.count == 0 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as? CharacterCollectionViewCell else {
                 return UICollectionViewCell()
             }
@@ -149,19 +159,21 @@ extension FavoritesCharacterViewController: UICollectionViewDataSource {
             
             cell.configure(with: charactersInfo, indexPath: indexPath.row)
             
-            cell.isFavorited = true
+            cell.setFavoriteDelegate(delegate: self)
             
+            cell.setIsFavorited()
             
             return cell
         }
     }
     
     private func setupGradientBackground() {
-            let gradientLayer = CAGradientLayer()
-            gradientLayer.colors = [UIColor.red.cgColor, UIColor.blue.cgColor]
-            gradientLayer.locations = [0.0, 1.0] // Posição das cores (início e fim)
-            gradientLayer.frame = view.bounds
-            
-            view.layer.insertSublayer(gradientLayer, at: 0)
-        }
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [UIColor.red.cgColor, UIColor.blue.cgColor]
+        gradientLayer.locations = [0.0, 1.0] // Posição das cores (início e fim)
+        gradientLayer.frame = view.bounds
+        
+        collectionView.layer.insertSublayer(gradientLayer, at: 0)
+        view.layer.insertSublayer(gradientLayer, at: 0)
+    }
 }

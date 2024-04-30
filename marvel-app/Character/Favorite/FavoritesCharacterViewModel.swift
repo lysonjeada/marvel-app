@@ -21,4 +21,20 @@ class FavoritesCharacterViewModel {
         }
         return Array(characterInfo) // Convertendo o conjunto de volta para um array antes de retornar
     }
+    
+    func deleteFavorite(withName name: String, from context: NSManagedObjectContext) {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Characters")
+        fetchRequest.predicate = NSPredicate(format: "name == %@", name)
+        
+        do {
+            let objects = try context.fetch(fetchRequest)
+            for object in objects {
+                context.delete(object as! NSManagedObject)
+            }
+            
+            try context.save() // Salva as alterações após a exclusão
+        } catch {
+            print("Error deleting favorite: \(error)")
+        }
+    }
 }

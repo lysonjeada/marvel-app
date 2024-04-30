@@ -2,8 +2,9 @@ import UIKit
 import CoreData
 import SDWebImage
 
-protocol CharacterListViewProtocol {
+protocol CharacterListViewProtocol: AnyObject {
     func saveFavorite(with name: String, description: String, imagePath: String, imageExtension: String)
+    
 }
 
 class CharacterListViewController: UIViewController, CharacterListViewProtocol {
@@ -16,7 +17,6 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
         layout.minimumInteritemSpacing = 10
         let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
         layout.itemSize = CGSize(width: collectionView.bounds.width, height: 150)
-        collectionView.backgroundColor = .white
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.register(CharacterCollectionViewCell.self, forCellWithReuseIdentifier: "CharacterCell")
         collectionView.register(EmptyCollectionViewCell.self, forCellWithReuseIdentifier: "EmptyCell")
@@ -58,8 +58,7 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
-            
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -72,6 +71,7 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
         gradientLayer.locations = [0.0, 1.0] // Posição das cores (início e fim)
         gradientLayer.frame = view.bounds
         
+        collectionView.layer.insertSublayer(gradientLayer, at: 0)
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
     
@@ -110,7 +110,6 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
         
         viewModel?.saveFavorite(with: context)
     }
-    
 }
 
 extension CharacterListViewController: UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate  {
@@ -147,7 +146,7 @@ extension CharacterListViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        cell.setCell(delegate: self)
+        cell.setListDelegate(delegate: self)
         cell.isFavorited = false
         cell.configure(with: characters, indexPath: indexPath.row)
         return cell

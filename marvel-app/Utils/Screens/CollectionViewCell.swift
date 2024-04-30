@@ -4,7 +4,8 @@ class CharacterCollectionViewCell: UICollectionViewCell {
     
     var favoriteButtonHandler: (() -> Void)?
     var characterInfo: CharacterInfo?
-    var delegate: CharacterListViewProtocol?
+    var listDelegate: CharacterListViewProtocol?
+    var favoriteDelegate: FavoritesCharacterViewProtocol?
     var isFavorited: Bool = false
     
     private lazy var characterImageView: UIImageView = {
@@ -42,10 +43,19 @@ class CharacterCollectionViewCell: UICollectionViewCell {
     
     private lazy var favoriteButton: UIButton = {
         let button = UIButton(type: .system)
-        button.isHidden = isFavorited
         button.setImage(UIImage(systemName: "heart"), for: .normal)
         button.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
         button.isUserInteractionEnabled = true
+        return button
+    }()
+    
+    private lazy var deleteButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "trash"), for: .normal)
+        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        button.isUserInteractionEnabled = true
+        button.isHidden = true
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -64,8 +74,12 @@ class CharacterCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setCell(delegate: CharacterListViewProtocol) {
-        self.delegate = delegate
+    func setListDelegate(delegate: CharacterListViewProtocol) {
+        self.listDelegate = delegate
+    }
+    
+    func setFavoriteDelegate(delegate: FavoritesCharacterViewProtocol) {
+        self.favoriteDelegate = delegate
     }
     
     @objc private func favoriteButtonTapped(sender: UIButton) {
@@ -75,16 +89,29 @@ class CharacterCollectionViewCell: UICollectionViewCell {
            let description = characterInfo?.description,
            let thumbnailPath = characterInfo?.thumbnailPath,
            let thumbnailExtension = characterInfo?.thumbnailExtension {
-            // aqui passa
-            delegate?.saveFavorite(with: name, description: description, imagePath: thumbnailPath, imageExtension: thumbnailExtension)
+            listDelegate?.saveFavorite(with: name, description: description, imagePath: thumbnailPath, imageExtension: thumbnailExtension)
         }
         
         updateImage()
     }
     
+    @objc private func deleteButtonTapped(sender: UIButton) {
+        isSelected.toggle()
+        
+        if let name = characterInfo?.name {
+            favoriteDelegate?.deleteFavorite(with: name)
+        }
+    }
+    
     private func updateImage() {
         let imageName = isSelected ? "heart.fill" : "heart"
         favoriteButton.setImage(UIImage(systemName: imageName), for: .normal)
+    }
+    
+    func setIsFavorited() {
+        isFavorited = true
+        favoriteButton.isHidden = true
+        deleteButton.isHidden = false
     }
     
     private func setupFavoriteConstraints() {
@@ -98,6 +125,7 @@ class CharacterCollectionViewCell: UICollectionViewCell {
         infoStackView.addArrangedSubview(nameLabel)
         infoStackView.addArrangedSubview(descriptionLabel)
         infoStackView.addArrangedSubview(favoriteButton)
+        infoStackView.addArrangedSubview(deleteButton)
         
         infoStackView.setCustomSpacing(12, after: descriptionLabel)
         
