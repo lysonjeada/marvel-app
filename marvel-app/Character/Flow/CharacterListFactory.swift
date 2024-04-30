@@ -1,13 +1,13 @@
-import Foundation
+import UIKit
 
 enum CharacterListFactory {
-    static func build() -> CharacterListViewController {
+    static func build() -> UINavigationController {
         let useCase = CharacterListUseCase()
         let viewModel = CharacterListViewModel(useCase: useCase)
         let view = CharacterListViewController()
         
         view.viewModel = viewModel
-        
-        return view
+        let nc = UINavigationController(rootViewController: view)
+        return nc
     }
 }

@@ -55,7 +55,7 @@ class CharacterListViewModel: CharacterListViewModelProtocol {
     }
 }
 
-struct CharacterInfo {
+struct CharacterInfo: Hashable {
     let name: String
     let description: String
     let thumbnailPath: String

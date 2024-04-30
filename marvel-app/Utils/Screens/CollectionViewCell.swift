@@ -11,6 +11,7 @@ class CharacterCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 4
         return imageView
     }()
     
@@ -20,6 +21,7 @@ class CharacterCollectionViewCell: UICollectionViewCell {
         stackView.spacing = 8
         stackView.distribution = .fill
         stackView.alignment = .leading
+        stackView.isUserInteractionEnabled = true
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -33,7 +35,7 @@ class CharacterCollectionViewCell: UICollectionViewCell {
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont.systemFont(ofSize: 10)
         label.numberOfLines = 4
         return label
     }()
@@ -43,6 +45,7 @@ class CharacterCollectionViewCell: UICollectionViewCell {
         button.isHidden = isFavorited
         button.setImage(UIImage(systemName: "heart"), for: .normal)
         button.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
+        button.isUserInteractionEnabled = true
         return button
     }()
     
@@ -52,7 +55,9 @@ class CharacterCollectionViewCell: UICollectionViewCell {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
         contentView.addGestureRecognizer(tapGesture)
         
-        setupConstraints()
+        isUserInteractionEnabled = true
+        
+        setupGradientBackground()
     }
     
     required init?(coder: NSCoder) {
@@ -70,6 +75,7 @@ class CharacterCollectionViewCell: UICollectionViewCell {
            let description = characterInfo?.description,
            let thumbnailPath = characterInfo?.thumbnailPath,
            let thumbnailExtension = characterInfo?.thumbnailExtension {
+            // aqui passa
             delegate?.saveFavorite(with: name, description: description, imagePath: thumbnailPath, imageExtension: thumbnailExtension)
         }
         
@@ -81,10 +87,13 @@ class CharacterCollectionViewCell: UICollectionViewCell {
         favoriteButton.setImage(UIImage(systemName: imageName), for: .normal)
     }
     
-    private func setupConstraints() {
+    private func setupFavoriteConstraints() {
+        layer.cornerRadius = 8
+        
         characterImageView.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        favoriteButton.translatesAutoresizingMaskIntoConstraints = false
         
         infoStackView.addArrangedSubview(nameLabel)
         infoStackView.addArrangedSubview(descriptionLabel)
@@ -98,24 +107,37 @@ class CharacterCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             characterImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             characterImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            characterImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            characterImageView.heightAnchor.constraint(equalToConstant: 150),
+            characterImageView.widthAnchor.constraint(equalToConstant: 150),
+            characterImageView.heightAnchor.constraint(equalTo: heightAnchor),
             
             infoStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             infoStackView.leadingAnchor.constraint(equalTo: characterImageView.trailingAnchor, constant: 8),
+            infoStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            infoStackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
+            
+            descriptionLabel.widthAnchor.constraint(equalTo: infoStackView.widthAnchor)
         ])
     }
     
-    func configure(with character: CharacterInfo) {
-        nameLabel.text = character.name
-        descriptionLabel.text = character.description
+    func configure(with character: [CharacterInfo], indexPath: Int) {
+        guard indexPath < character.count else {
+            return
+        }
         
-        let thumbnailURLString = ImageUtil.returnCorrectUrlToShowImage(thumbnailPath: character.thumbnailPath, thumbnailExtension: character.thumbnailExtension)
+        self.characterInfo = character[indexPath]
+        characterImageView.isHidden = false
+        infoStackView.isHidden = false
+        
+        nameLabel.text = character[indexPath].name
+        descriptionLabel.text = character[indexPath].description
+        
+        let thumbnailURLString = ImageUtil.returnCorrectUrlToShowImage(thumbnailPath: character[indexPath].thumbnailPath, thumbnailExtension: character[indexPath].thumbnailExtension)
         
         if let thumbnailURL = URL(string: thumbnailURLString) {
             characterImageView.sd_setImage(with: thumbnailURL, completed: nil)
         }
         
+        setupFavoriteConstraints()
     }
     
     @objc private func handleTapGesture(_ gesture: UITapGestureRecognizer) {
@@ -127,7 +149,14 @@ class CharacterCollectionViewCell: UICollectionViewCell {
         // Notificar o delegate que a célula foi tocada
         (collectionView.delegate)?.collectionView?(collectionView, didSelectItemAt: indexPath)
     }
+    
+    private func setupGradientBackground() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [UIColor.red.cgColor, UIColor.blue.cgColor]
+        gradientLayer.locations = [0.0, 1.0] // Posição das cores (início e fim)
+        gradientLayer.frame = bounds
+        
+        layer.insertSublayer(gradientLayer, at: 0)
+    }
+
 }
-
-
-

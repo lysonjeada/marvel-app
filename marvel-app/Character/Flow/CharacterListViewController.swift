@@ -14,11 +14,12 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 4
         layout.minimumInteritemSpacing = 10
-        layout.itemSize = CGSize(width: 150, height: 250)
         let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
+        layout.itemSize = CGSize(width: collectionView.bounds.width, height: 150)
         collectionView.backgroundColor = .white
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.register(CharacterCollectionViewCell.self, forCellWithReuseIdentifier: "CharacterCell")
+        collectionView.register(EmptyCollectionViewCell.self, forCellWithReuseIdentifier: "EmptyCell")
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.isUserInteractionEnabled = true
@@ -35,7 +36,7 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
     
     var viewModel: CharacterListViewModel?
     
-    private var characters: [[CharacterInfo]] = []
+    private var characters: [CharacterInfo] = []
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -50,6 +51,8 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
         self.setupSearchController()
         title = "Marvel Characters"
         
+        self.setupGradientBackground()
+        
         displayCharacters()
         
         view.addSubview(collectionView)
@@ -63,10 +66,19 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
         ])
     }
     
+    private func setupGradientBackground() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [UIColor.red.cgColor, UIColor.blue.cgColor]
+        gradientLayer.locations = [0.0, 1.0] // Posição das cores (início e fim)
+        gradientLayer.frame = view.bounds
+        
+        view.layer.insertSublayer(gradientLayer, at: 0)
+    }
+    
     func displayCharacters() {
         viewModel?.fetchCharacters(completion: { characteres in
             guard let characteres = characteres else { return }
-            self.characters = characteres.compactMap { $0 }.map { [$0] }
+            self.characters = characteres
             self.collectionView.reloadData()
         })
     }
@@ -98,6 +110,7 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
         
         viewModel?.saveFavorite(with: context)
     }
+    
 }
 
 extension CharacterListViewController: UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate  {
@@ -114,19 +127,19 @@ extension CharacterListViewController: UISearchResultsUpdating, UISearchControll
 extension CharacterListViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let characterDetailVC = CharacterDetailViewController(character: characters[indexPath.section][indexPath.row])
+        let characterDetailVC = CharacterDetailViewController(character: characters[indexPath.row])
         let navigationController = UINavigationController(rootViewController: characterDetailVC)
         self.present(navigationController, animated: true, completion: nil)
     }
 }
 
 extension CharacterListViewController: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return characters.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return characters[section].count
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -134,10 +147,9 @@ extension CharacterListViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        let character = characters[indexPath.section][indexPath.row]
         cell.setCell(delegate: self)
         cell.isFavorited = false
-        cell.configure(with: character)
+        cell.configure(with: characters, indexPath: indexPath.row)
         return cell
     }
 }

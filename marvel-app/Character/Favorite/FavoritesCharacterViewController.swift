@@ -14,11 +14,12 @@ class FavoritesCharacterViewController: UIViewController, FavoritesCharacterView
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 4
         layout.minimumInteritemSpacing = 10
-        layout.itemSize = CGSize(width: 150, height: 250)
         let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
+        layout.itemSize = CGSize(width: collectionView.bounds.width, height: 250)
         collectionView.backgroundColor = .white
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.register(CharacterCollectionViewCell.self, forCellWithReuseIdentifier: "CharacterCell")
+        collectionView.register(EmptyCollectionViewCell.self, forCellWithReuseIdentifier: "EmptyCell")
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.isUserInteractionEnabled = true
@@ -50,6 +51,8 @@ class FavoritesCharacterViewController: UIViewController, FavoritesCharacterView
         self.setupSearchController()
         title = "Marvel Characters"
         
+        setupGradientBackground()
+        
         displayCharacters()
         
         view.addSubview(collectionView)
@@ -66,9 +69,12 @@ class FavoritesCharacterViewController: UIViewController, FavoritesCharacterView
     func displayCharacters() {
         DispatchQueue.main.async { [weak self] in
             let context = (UIApplication.shared.delegate as!AppDelegate).persistentContainer.viewContext
-            let characters = self?.viewModel?.returnFavorites(with: context)
-            guard let characters = characters else { return }
-            self?.collectionView.reloadData()
+            if let characters = self?.viewModel?.returnFavorites(with: context) {
+                self?.charactersInfo = characters.map { character in
+                    return CharacterInfo(name: character.name, description: character.description, thumbnailPath: character.thumbnailPath, thumbnailExtension: character.thumbnailExtension)
+                }
+                self?.collectionView.reloadData()
+            }
         }
     }
     
@@ -119,24 +125,43 @@ extension FavoritesCharacterViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CharacterCell", for: indexPath) as? CharacterCollectionViewCell else {
-            return UICollectionViewCell()
-        }
+        
+        
         
         let context = (UIApplication.shared.delegate as!AppDelegate).persistentContainer.viewContext
-        var characters = viewModel?.returnFavorites(with: context)
+        let characters = viewModel?.returnFavorites(with: context)
+        
         characters?.forEach({ character in
-            if let name = character.name,
-               let thumbnailPath = character.imagePath,
-               let thumbnailExtension = character.imageExtension {
-                let characterInfo = CharacterInfo(name: name, description: character.description, thumbnailPath: thumbnailPath, thumbnailExtension: thumbnailExtension)
-                cell.configure(with: characterInfo)
-                charactersInfo.append(characterInfo)
-            }
+            let characterInfo = CharacterInfo(name: character.name, description: character.description, thumbnailPath: character.thumbnailPath, thumbnailExtension: character.thumbnailExtension)
+            charactersInfo.append(characterInfo)
         })
         
-        cell.isFavorited = true
-        
-        return cell
+        if charactersInfo.isEmpty {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as? CharacterCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CharacterCell", for: indexPath) as? CharacterCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            
+            cell.configure(with: charactersInfo, indexPath: indexPath.row)
+            
+            cell.isFavorited = true
+            
+            
+            return cell
+        }
     }
+    
+    private func setupGradientBackground() {
+            let gradientLayer = CAGradientLayer()
+            gradientLayer.colors = [UIColor.red.cgColor, UIColor.blue.cgColor]
+            gradientLayer.locations = [0.0, 1.0] // Posição das cores (início e fim)
+            gradientLayer.frame = view.bounds
+            
+            view.layer.insertSublayer(gradientLayer, at: 0)
+        }
 }
