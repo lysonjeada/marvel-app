@@ -21,12 +21,12 @@ struct MarvelCharacter: Codable {
     let description: String
     let modified: String
     let resourceURI: String
-    let urls: [MarvelURL]
-    let thumbnail: MarvelThumbnail
-    let comics: MarvelInfo
-    let stories: MarvelInfo
-    let events: MarvelInfo
-    let series: MarvelInfo
+    let urls: [MarvelURL]?
+    let thumbnail: MarvelThumbnail?
+    let comics: MarvelInfo?
+    let stories: MarvelInfo?
+    let events: MarvelInfo?
+    let series: MarvelInfo?
 }
 
 struct MarvelURL: Codable {

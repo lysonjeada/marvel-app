@@ -3,7 +3,7 @@ import Foundation
 class CharacterListUseCase: UseCaseProtocol {
     typealias ResponseType = CharacterResponse
     
-    func fetch(completion: @escaping (Result<CharacterResponse, Error>) -> Void) {
+    func fetch(completion: @escaping (Result<CharacterResponse, Error>) -> ()) {
         let publicKey = "079a73178747afd6070a2a57d934a551"
         let privateKey = "330f505638834d5e451aa39ac3e5cc7b893fb170"
         let timestamp = String(Date().timeIntervalSince1970)

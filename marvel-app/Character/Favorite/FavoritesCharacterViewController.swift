@@ -4,11 +4,13 @@ import SDWebImage
 
 protocol FavoritesCharacterViewProtocol {
     func deleteFavorite(with name: String)
+    func reloadData()
 }
 
 class FavoritesCharacterViewController: UIViewController, FavoritesCharacterViewProtocol {
     
     private let searchController = UISearchController(searchResultsController: nil)
+    private var favoritedCharacters: [CharacterInfo] = []
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -46,11 +48,12 @@ class FavoritesCharacterViewController: UIViewController, FavoritesCharacterView
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        favoritedCharacters = listFavorites()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         displayCharacters()
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
     }
     
     override func viewDidLoad() {
@@ -69,8 +72,6 @@ class FavoritesCharacterViewController: UIViewController, FavoritesCharacterView
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        
-        
     }
     
     func displayCharacters() {
@@ -85,11 +86,15 @@ class FavoritesCharacterViewController: UIViewController, FavoritesCharacterView
         }
     }
     
+    func reloadData() {
+        collectionView.reloadData()
+    }
+    
     private func setupSearchController() {
         self.searchController.searchResultsUpdater = self
         self.searchController.obscuresBackgroundDuringPresentation = false
         self.searchController.hidesNavigationBarDuringPresentation = false
-        self.searchController.searchBar.placeholder = "Search Cryptos"
+        self.searchController.searchBar.placeholder = "Search Characters"
         
         self.navigationItem.searchController = searchController
         self.definesPresentationContext = false
@@ -101,11 +106,32 @@ class FavoritesCharacterViewController: UIViewController, FavoritesCharacterView
         //        searchController.searchBar.setImage(UIImage(systemName: "line.horizontal.3.decrease"), for: .bookmark, state: .normal)
     }
     
+    func listFavorites() -> [CharacterInfo] {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        return viewModel?.returnFavorites(with: context) ?? []
+    }
+    
     func deleteFavorite(with name: String) {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         self.viewModel?.deleteFavorite(withName: name, from: context)
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
+        collectionView.visibleCells.forEach { cell in
+            guard let characterCell = cell as? CharacterCollectionViewCell,
+                  let indexPath = collectionView.indexPath(for: characterCell),
+                  let character = characterCell.characterInfo,
+                  character.name == name else {
+                return
+            }
+            updateHeartImage(for: characterCell, at: indexPath)
+            self.displayCharacters()
+        }
+    }
+    
+    func updateHeartImage(for cell: CharacterCollectionViewCell, at indexPath: IndexPath) {
+        let character = charactersInfo[indexPath.row]
+        if favoritedCharacters.contains(where: { $0.name == character.name }) {
+            cell.setIsFavorited()
+        } else {
+            cell.isFavorited = false
         }
     }
 }
@@ -140,11 +166,7 @@ extension FavoritesCharacterViewController: UICollectionViewDataSource {
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        if charactersInfo.count == 0 {
-            return 1
-        } else {
-            return charactersInfo.count
-        }
+        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -164,7 +186,7 @@ extension FavoritesCharacterViewController: UICollectionViewDataSource {
             
             cell.setFavoriteDelegate(delegate: self)
             
-            cell.setIsFavorited()
+            updateHeartImage(for: cell, at: indexPath)
             
             return cell
         }

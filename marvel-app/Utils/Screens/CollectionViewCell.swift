@@ -82,6 +82,10 @@ class CharacterCollectionViewCell: UICollectionViewCell {
         self.favoriteDelegate = delegate
     }
     
+    func setFavoritedIcon() {
+        favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
+    }
+    
     @objc private func favoriteButtonTapped(sender: UIButton) {
         isSelected.toggle()
         
@@ -96,8 +100,6 @@ class CharacterCollectionViewCell: UICollectionViewCell {
     }
     
     @objc private func deleteButtonTapped(sender: UIButton) {
-        isSelected.toggle()
-        
         if let name = characterInfo?.name {
             favoriteDelegate?.deleteFavorite(with: name)
         }

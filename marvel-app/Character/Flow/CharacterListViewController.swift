@@ -4,12 +4,12 @@ import SDWebImage
 
 protocol CharacterListViewProtocol: AnyObject {
     func saveFavorite(with name: String, description: String, imagePath: String, imageExtension: String)
-    
 }
 
 class CharacterListViewController: UIViewController, CharacterListViewProtocol {
     
     private let searchController = UISearchController(searchResultsController: nil)
+    private var collectionViewBottomConstraint: NSLayoutConstraint?
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -37,6 +37,17 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
     var viewModel: CharacterListViewModel?
     
     private var characters: [CharacterInfo] = []
+    private var filteredCharacters: [CharacterInfo] = []
+    private var favoritedCharacters: [CharacterInfo] = []
+    
+    private var isSearching = false
+    private var dataSource: [CharacterInfo] {
+        if isSearching {
+            return filteredCharacters
+        } else {
+            return characters
+        }
+    }
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -44,6 +55,10 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        favoritedCharacters = listFavorites()
     }
     
     override func viewDidLoad() {
@@ -54,6 +69,8 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
         self.setupGradientBackground()
         
         displayCharacters()
+        setupCollectionView()
+        observeKeyboard()
         
         view.addSubview(collectionView)
         
@@ -63,6 +80,11 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+    
+    func listFavorites() -> [CharacterInfo] {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        return viewModel?.returnFavorites(with: context) ?? []
     }
     
     private func setupGradientBackground() {
@@ -76,18 +98,22 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
     }
     
     func displayCharacters() {
-        viewModel?.fetchCharacters(completion: { characteres in
-            guard let characteres = characteres else { return }
-            self.characters = characteres
-            self.collectionView.reloadData()
+        viewModel?.fetchCharacters(completion: { [weak self] character, error in
+            
+            guard let characters = character else {
+                return
+            }
+            self?.characters = characters
+            self?.filteredCharacters = self?.characters ?? []
+            self?.collectionView.reloadData()
         })
     }
     
     private func setupSearchController() {
         self.searchController.searchResultsUpdater = self
-        self.searchController.obscuresBackgroundDuringPresentation = false
+        self.searchController.obscuresBackgroundDuringPresentation = true
         self.searchController.hidesNavigationBarDuringPresentation = false
-        self.searchController.searchBar.placeholder = "Search Cryptos"
+        self.searchController.searchBar.placeholder = "Search Characters"
         
         self.navigationItem.searchController = searchController
         self.definesPresentationContext = false
@@ -109,13 +135,72 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
         newUser.setValue(description, forKey: "text")
         
         viewModel?.saveFavorite(with: context)
+        
+    }
+    
+    func updateHeartImage(for cell: CharacterCollectionViewCell, at indexPath: IndexPath) {
+        let character = dataSource[indexPath.row]
+        if favoritedCharacters.contains(where: { $0.name == character.name }) {
+            cell.setIsFavorited()
+        } else {
+            cell.isFavorited = false
+        }
+    }
+    
+    private func setupCollectionView() {
+        view.addSubview(collectionView)
+        
+        collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        collectionViewBottomConstraint = collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        collectionViewBottomConstraint?.isActive = true
+    }
+    
+    private func observeKeyboard() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        collectionViewBottomConstraint?.constant = -keyboardFrame.height
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        collectionViewBottomConstraint?.constant = 0
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
     }
 }
 
 extension CharacterListViewController: UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate  {
     
     func updateSearchResults(for searchController: UISearchController) {
-        //        self.viewModel.updateSearchController(searchBarText: searchController.searchBar.text)
+        defer {
+            collectionView.reloadData()
+        }
+        isSearching = !(searchController.searchBar.text?.isEmpty ?? true)
+        guard let searchText = searchController.searchBar.text, !searchText.isEmpty else {
+            return
+        }
+        print("searching for \(searchText)")
+        filteredCharacters = characters.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+        print("filteredCharacters.count \(filteredCharacters.count)")
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.isEnabled = true
+        searchController.searchBar.becomeFirstResponder()
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchController.searchBar.resignFirstResponder()
+        collectionView.reloadData()
     }
     
     func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
@@ -134,7 +219,7 @@ extension CharacterListViewController: UICollectionViewDelegate {
 
 extension CharacterListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return characters.count
+        return dataSource.count
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -147,9 +232,9 @@ extension CharacterListViewController: UICollectionViewDataSource {
         }
         
         cell.setListDelegate(delegate: self)
-        cell.isFavorited = false
-        cell.configure(with: characters, indexPath: indexPath.row)
+    
+        updateHeartImage(for: cell, at: indexPath)
+        cell.configure(with: dataSource, indexPath: indexPath.row)
         return cell
     }
 }
-
