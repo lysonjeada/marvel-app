@@ -110,6 +110,8 @@ class CharacterInfoTests: XCTestCase {
 
 class CharacterListViewModelMock: CharacterListViewModelProtocol {
     
+    
+    
     var methodsCalled: [MethodsCalled] = []
     
     var useCase: MockCharacterListUseCase?
@@ -123,16 +125,16 @@ class CharacterListViewModelMock: CharacterListViewModelProtocol {
     
     var characters: [CharacterInfo] = []
     
-    var error: Error?
-    
     var isSuccess: Bool?
+    
+    var error: FetchError?
     
     init(isSuccess: Bool?, useCase: MockCharacterListUseCase) {
         self.useCase = useCase
         self.isSuccess = isSuccess
     }
     
-    func fetchCharacters(completion: @escaping ([CharacterInfo]?, Error?) -> ()) {
+    func fetchCharacters(completion: @escaping ([marvel_app.CharacterInfo]?, marvel_app.FetchError?) -> ()) {
         if isSuccess ?? false {
             let characterLoadedFromJson = useCase?.loadMarvelCharacters(from: "characters-list")
             characterLoadedFromJson?.forEach({ character in

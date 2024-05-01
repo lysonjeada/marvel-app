@@ -2,9 +2,9 @@ import Foundation
 import CoreData
 
 protocol CharacterListViewModelProtocol {
-    func fetchCharacters(completion: @escaping ([CharacterInfo]?, Error?) -> ())
+    func fetchCharacters(completion: @escaping ([CharacterInfo]?, FetchError?) -> ())
     var characters: [CharacterInfo] { get }
-    var error: Error? { get }
+    var error: FetchError? { get }
     func returnDescriptionAndTextIfItsEmpty(character: MarvelCharacter) -> String
     func saveFavorite(with context: NSManagedObjectContext)
 }
@@ -15,7 +15,7 @@ class CharacterListViewModel: CharacterListViewModelProtocol {
     
     var characters: [CharacterInfo] = []
     var favoritedCharacters: Set<CharacterInfo> = []
-    var error: Error?
+    var error: FetchError?
     
     var characterInfoClosure: ([CharacterInfo]?, Error?) -> ()
     
@@ -24,7 +24,7 @@ class CharacterListViewModel: CharacterListViewModelProtocol {
         self.characterInfoClosure = { _, _ in }
     }
     
-    func fetchCharacters(completion: @escaping ([CharacterInfo]?, Error?) -> ()) {
+    func fetchCharacters(completion: @escaping ([CharacterInfo]?, FetchError?) -> ()) {
         useCase.fetch { [weak self] result in
             switch result {
             case .success(let characters):
@@ -36,8 +36,29 @@ class CharacterListViewModel: CharacterListViewModelProtocol {
                 }
 //                self?.fetchCharacters(completion: completion)
             case .failure(let error):
-                self?.fetchFailureCharacters(completion: completion)
-                self?.error = error
+                switch error {
+                case .errorConnection:
+                    self?.fetchFailureCharacters(completion: completion)
+                    self?.error = error
+                case .invalidUrl:
+                    self?.fetchFailureCharacters(completion: completion)
+                    self?.error = error
+                case .executionError:
+                    self?.fetchFailureCharacters(completion: completion)
+                    self?.error = error
+                case .invalidResponse:
+                    self?.fetchFailureCharacters(completion: completion)
+                    self?.error = error
+                case .invalidDecode:
+                    self?.fetchFailureCharacters(completion: completion)
+                    self?.error = error
+                case .unknownError:
+                    self?.fetchFailureCharacters(completion: completion)
+                    self?.error = error
+                case .invalidData:
+                    self?.fetchFailureCharacters(completion: completion)
+                    self?.error = error
+                }
             }
         }
     }
@@ -73,7 +94,7 @@ class CharacterListViewModel: CharacterListViewModelProtocol {
         
     }
     
-    func fetchFailureCharacters(completion: @escaping ([CharacterInfo]?, Error?) -> ()) {
+    func fetchFailureCharacters(completion: @escaping ([CharacterInfo]?, FetchError?) -> ()) {
         DispatchQueue.main.async {
             completion(nil, self.error)
         }

@@ -1,6 +1,5 @@
 import UIKit
 import CoreData
-import SDWebImage
 
 protocol CharacterListViewProtocol: AnyObject {
     func saveFavorite(with name: String, description: String, imagePath: String, imageExtension: String)
@@ -10,6 +9,7 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
     
     private let searchController = UISearchController(searchResultsController: nil)
     private var collectionViewBottomConstraint: NSLayoutConstraint?
+    private var hasError: Bool = false
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -20,6 +20,7 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.register(CharacterCollectionViewCell.self, forCellWithReuseIdentifier: "CharacterCell")
         collectionView.register(EmptyCollectionViewCell.self, forCellWithReuseIdentifier: "EmptyCell")
+        collectionView.register(ErrorCollectionViewCell.self, forCellWithReuseIdentifier: "ErrorCell")
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.isUserInteractionEnabled = true
@@ -100,12 +101,17 @@ class CharacterListViewController: UIViewController, CharacterListViewProtocol {
     func displayCharacters() {
         viewModel?.fetchCharacters(completion: { [weak self] character, error in
             
+            if let error = error {
+                self?.hasError = true
+            }
+            
             guard let characters = character else {
                 return
             }
             self?.characters = characters
             self?.filteredCharacters = self?.characters ?? []
             self?.collectionView.reloadData()
+            
         })
     }
     
@@ -227,14 +233,22 @@ extension CharacterListViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CharacterCell", for: indexPath) as? CharacterCollectionViewCell else {
-            return UICollectionViewCell()
-        }
+        if hasError {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ErrorCell", for: indexPath) as? ErrorCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CharacterCell", for: indexPath) as? CharacterCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            
+            cell.setListDelegate(delegate: self)
         
-        cell.setListDelegate(delegate: self)
-    
-        updateHeartImage(for: cell, at: indexPath)
-        cell.configure(with: dataSource, indexPath: indexPath.row)
-        return cell
+            updateHeartImage(for: cell, at: indexPath)
+            cell.configure(with: dataSource, indexPath: indexPath.row)
+            return cell
+        }
+        return UICollectionViewCell()
     }
 }
