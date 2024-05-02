@@ -11,3 +11,9 @@
 <img src="https://github.com/lysonjeada/marvel-app/assets/58961677/3ca1f9dd-0759-486c-b706-fac50148829e" alt="image" width="300" height="600">
 
 ### Na barra de search, você pode pesquisar pelo nome de algum personagem
+
+<img src="https://github.com/lysonjeada/marvel-app/assets/58961677/fb44120d-eb80-4b2b-a083-f6df9a5fe60c" alt="image" width="300" height="600">
+
+<img src="https://github.com/lysonjeada/marvel-app/assets/58961677/74cb293c-fc30-47d5-af1a-bd682acbf681" alt="image" width="300" height="600">
+
+<img src="https://github.com/lysonjeada/marvel-app/assets/58961677/ccb9fd05-395a-4f9d-8b8c-3f76cc1ce94d" alt="image" width="300" height="600">
