@@ -18,14 +18,16 @@
 
 <img src="https://github.com/lysonjeada/marvel-app/assets/58961677/ccb9fd05-395a-4f9d-8b8c-3f76cc1ce94d" alt="image" width="300" height="600">
 
-### Quando há um clique em uma linha específica, é exibido uma tela de detalhe daquele personagem: com nome, a imagem maior, descrição completa, e também um botão para favoritar 
+### Quando há um clique em uma linha específica, é exibido uma tela de detalhe daquele personagem: com nome, a imagem maior, descrição completa, e também um botão para favoritar
 
-<video src="https://github.com/lysonjeada/marvel-app/assets/58961677/50152c7f-91e5-4796-acd7-e8cef1d393b1" alt="image" width="300" height="600">
+<img src="https://github.com/lysonjeada/marvel-app/assets/58961677/66ca8b3d-807f-4933-925b-d6ec8a1d427e" alt="image" width="300" height="600">
 
-### Quando é clicado na tab de favoritos, há duas situações, 
+### Quando é clicado na tab de favoritos, há duas situações
 
-<video src="https://github.com/lysonjeada/marvel-app/assets/58961677/bdefb7a5-8160-49ed-a1bd-f375c04afc1b" alt="image" width="300" height="600">
+<img src="https://github.com/lysonjeada/marvel-app/assets/58961677/dd3dcad7-42b7-464d-810f-9b4ef7fe6431" alt="image" width="300" height="600">
 
-<video src="https://github.com/lysonjeada/marvel-app/assets/58961677/955c1739-ca19-403a-8d35-2c2644bc1765" alt="image" width="300" height="600">
+<img src="https://github.com/lysonjeada/marvel-app/assets/58961677/39cfef3d-6562-453d-91be-d1b3d2130954" alt="image" width="300" height="600">
+
+
 
 
